@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Menu, X } from 'lucide-react';
 
@@ -16,34 +16,79 @@ import NotFound from '../pages/NotFound';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const toggleMenu = () => setIsOpen(!isOpen);
     const closeMenu = () => setIsOpen(false);
 
-    const isActive = (path: string) => location.pathname === path ? 'active' : '';
+    const linkClass = (path: string) =>
+        `nav-link${location.pathname === path ? ' nav-link--active' : ''}`;
+
+    const mobileLinkClass = (path: string) =>
+        `navbar-mobile-link${location.pathname === path ? ' navbar-mobile-link--active' : ''}`;
+
+    const navLinks = [
+        { to: '/', label: 'Home' },
+        { to: '/life-insurance', label: 'Life Insurance' },
+        { to: '/auto-insurance', label: 'Auto Insurance' },
+        { to: '/health-insurance', label: 'Health Insurance' },
+        { to: '/faqs', label: 'FAQs' },
+        { to: '/about-us', label: 'About Us' },
+    ];
 
     return (
-        <nav className="navbar">
-            <div className="container">
-                <Link to="/" className="nav-brand" onClick={closeMenu}>
-                    <Shield className="text-primary" />
+        <div className={`navbar-wrapper${scrolled ? ' navbar-wrapper--scrolled' : ''}`}>
+            <nav className={`navbar${scrolled ? ' navbar--scrolled' : ''}`}>
+                <Link to="/" className="navbar-logo" onClick={closeMenu}>
+                    <Shield size={26} strokeWidth={2.5} style={{ color: 'var(--accent)' }} />
                     SecureLife
                 </Link>
-                <button className="mobile-menu-btn" onClick={toggleMenu} aria-label="Toggle menu">
-                    {isOpen ? <X /> : <Menu />}
-                </button>
-                <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
-                    <li><Link to="/" className={isActive('/')} onClick={closeMenu}>Home</Link></li>
-                    <li><Link to="/life-insurance" className={isActive('/life-insurance')} onClick={closeMenu}>Life Insurance</Link></li>
-                    <li><Link to="/auto-insurance" className={isActive('/auto-insurance')} onClick={closeMenu}>Auto Insurance</Link></li>
-                    <li><Link to="/health-insurance" className={isActive('/health-insurance')} onClick={closeMenu}>Health Insurance</Link></li>
-                    <li><Link to="/faqs" className={isActive('/faqs')} onClick={closeMenu}>FAQs</Link></li>
-                    <li><Link to="/about-us" className={isActive('/about-us')} onClick={closeMenu}>About Us</Link></li>
-                    <li><Link to="/contact" className={isActive('/contact')} onClick={closeMenu}>Contact</Link></li>
+
+                {/* Desktop Menu */}
+                <ul className="navbar-links">
+                    {navLinks.map(({ to, label }) => (
+                        <li key={to}>
+                            <Link to={to} className={linkClass(to)} onClick={closeMenu}>
+                                {label}
+                            </Link>
+                        </li>
+                    ))}
+                    <li>
+                        <Link to="/contact" className="nav-cta" onClick={closeMenu}>
+                            Contact
+                        </Link>
+                    </li>
                 </ul>
-            </div>
-        </nav>
+
+                {/* Mobile Menu Button */}
+                <button className="navbar-mobile-btn" onClick={toggleMenu} aria-label="Toggle menu">
+                    {isOpen ? <X size={26} /> : <Menu size={26} />}
+                </button>
+
+                {/* Mobile Menu Dropdown */}
+                {isOpen && (
+                    <div className="navbar-mobile-menu">
+                        {navLinks.map(({ to, label }) => (
+                            <Link key={to} to={to} className={mobileLinkClass(to)} onClick={closeMenu}>
+                                {label}
+                            </Link>
+                        ))}
+                        <Link to="/contact" className="navbar-mobile-cta" onClick={closeMenu}>
+                            Contact
+                        </Link>
+                    </div>
+                )}
+            </nav>
+        </div>
     );
 };
 
@@ -53,11 +98,13 @@ const Footer = () => {
             <div className="container">
                 <div className="footer-grid">
                     <div className="footer-col">
-                        <Link to="/" className="nav-brand" style={{ color: 'white', marginBottom: '1.5rem', display: 'inline-flex' }}>
-                            <Shield />
+                        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-white mb-4 no-underline">
+                            <Shield size={24} />
                             SecureLife
                         </Link>
-                        <p style={{ color: '#94a3b8', fontSize: '1rem' }}>Providing peace of mind through comprehensive insurance coverage tailored for you and your family.</p>
+                        <p style={{ color: '#94a3b8', fontSize: '0.9375rem', marginBottom: 0 }}>
+                            Providing peace of mind through comprehensive insurance coverage tailored for you and your family.
+                        </p>
                     </div>
                     <div className="footer-col">
                         <h4>Products</h4>
@@ -75,9 +122,17 @@ const Footer = () => {
                             <li><Link to="/faqs">FAQs</Link></li>
                         </ul>
                     </div>
+                    <div className="footer-col">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li style={{ color: '#94a3b8', fontSize: '0.9375rem' }}>+44 20 1234 5678</li>
+                            <li style={{ color: '#94a3b8', fontSize: '0.9375rem' }}>support@securelife.eu</li>
+                            <li style={{ color: '#94a3b8', fontSize: '0.9375rem' }}>London, United Kingdom</li>
+                        </ul>
+                    </div>
                 </div>
                 <div className="footer-bottom">
-                    <p>&copy; 2026 SecureLife Insurance. All rights reserved.</p>
+                    <p style={{ margin: 0 }}>&copy; 2026 SecureLife Insurance. All rights reserved.</p>
                 </div>
             </div>
         </footer>

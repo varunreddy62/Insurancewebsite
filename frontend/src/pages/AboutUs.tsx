@@ -1,95 +1,111 @@
 import React from 'react';
-import { Shield, Users, Target, Clock, Trophy } from 'lucide-react';
+import { Shield, Users, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const FadeInUp: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, delay, ease: "easeOut" }}
+    >
+        {children}
+    </motion.div>
+);
 
 const AboutUs = () => {
     return (
         <>
-            <div className="page-header" style={{ paddingBottom: '10rem' }}>
-                <div className="container animate-up">
-                    <h1>About SecureLife</h1>
-                    <p style={{ fontSize: '1.25rem' }}>A legacy of trust, stability, and unwavering commitment to protecting families across the nation.</p>
+            <div className="page-header" style={{ paddingBottom: '8rem' }}>
+                <div className="container">
+                    <FadeInUp>
+                        <h1>About SecureLife</h1>
+                        <p style={{ fontSize: '1.25rem' }}>A legacy of trust, stability, and unwavering commitment to protecting families across the nation.</p>
+                    </FadeInUp>
                 </div>
             </div>
 
-            <section className="section-padding" style={{ marginTop: '-8rem' }}>
+            {/* Mission Card */}
+            <section style={{ marginTop: '-5rem', paddingBottom: '4.5rem' }}>
                 <div className="container">
-                    <div className="card animate-up" style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-                        <h2 style={{ color: 'var(--primary-dark)', marginBottom: '1.5rem' }}>Our Mission</h2>
-                        <p style={{ fontSize: '1.25rem', maxWidth: '800px', margin: '0 auto', color: 'var(--text-main)' }}>
-                            To provide accessible, comprehensive, and transparent insurance solutions that empower individuals and families to live fearlessly, knowing their future is secure.
-                        </p>
-                    </div>
+                    <FadeInUp>
+                        <div className="card text-center" style={{ padding: '3.5rem 2.5rem' }}>
+                            <h2 className="text-insurance-primary mb-4">Our Mission</h2>
+                            <p className="text-lg max-w-3xl mx-auto text-insurance-textMain" style={{ marginBottom: 0 }}>
+                                To provide accessible, comprehensive, and transparent insurance solutions that empower individuals and families to live fearlessly, knowing their future is secure.
+                            </p>
+                        </div>
+                    </FadeInUp>
                 </div>
             </section>
 
-            <section className="section-padding" style={{ background: 'var(--white)' }}>
+            {/* Story Section */}
+            <section className="section-padding" style={{ background: 'white' }}>
                 <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
-                        <div className="animate-up">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <FadeInUp>
                             <img
                                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=800"
                                 alt="Our specialized team"
-                                style={{ width: '100%', borderRadius: 'var(--border-radius)', boxShadow: 'var(--card-shadow)' }}
+                                className="w-full rounded-[20px] shadow-lg"
                             />
-                        </div>
+                        </FadeInUp>
 
-                        <div className="animate-up delay-200">
-                            <h2 style={{ color: 'var(--primary-dark)' }}>Decades of Excellence</h2>
+                        <FadeInUp delay={0.2}>
+                            <h2 className="text-insurance-primary">Decades of Excellence</h2>
                             <p>Founded in 1998, SecureLife started with a simple belief: insurance shouldn't be confusing, and it shouldn't just be a transaction. It should be a lifelong partnership.</p>
                             <p>Over the past 25 years, we have grown from a small regional office to a nationwide provider, trusted by over 2 million policyholders. Despite our growth, we maintain the personalized, human touch that defined our early years.</p>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '3rem' }}>
+                            <div className="grid grid-cols-2 gap-6 mt-10">
                                 <div>
-                                    <h3 style={{ color: 'var(--primary)', fontSize: '2.5rem', marginBottom: '0.5rem' }}>2M+</h3>
-                                    <p style={{ margin: 0 }}>Happy Clients</p>
+                                    <h3 className="text-insurance-accent text-4xl mb-1">2M+</h3>
+                                    <p className="text-insurance-textMuted text-sm" style={{ margin: 0 }}>Happy Clients</p>
                                 </div>
                                 <div>
-                                    <h3 style={{ color: 'var(--primary)', fontSize: '2.5rem', marginBottom: '0.5rem' }}>$1B+</h3>
-                                    <p style={{ margin: 0 }}>Claims Paid</p>
+                                    <h3 className="text-insurance-accent text-4xl mb-1">$1B+</h3>
+                                    <p className="text-insurance-textMuted text-sm" style={{ margin: 0 }}>Claims Paid</p>
                                 </div>
                             </div>
-                        </div>
+                        </FadeInUp>
                     </div>
                 </div>
             </section>
 
-            <section className="section-padding">
+            {/* Core Values */}
+            <section className="section-padding" style={{ background: 'var(--bg-color)' }}>
                 <div className="container">
-                    <h2 className="text-center animate-up" style={{ marginBottom: '3rem' }}>Our Core Values</h2>
+                    <FadeInUp>
+                        <h2 className="text-center text-insurance-primary mb-2">Our Core Values</h2>
+                        <p className="text-center max-w-xl mx-auto">The principles that guide every decision we make and every policy we write.</p>
+                    </FadeInUp>
 
                     <div className="card-grid">
-                        <div className="card animate-up">
-                            <div className="card-icon" style={{ background: 'rgba(14, 165, 233, 0.1)', color: 'var(--secondary)' }}>
-                                <Shield />
-                            </div>
-                            <h3>Integrity</h3>
-                            <p>We operate with absolute transparency. No hidden fees, no confusing jargon, just honest protection.</p>
-                        </div>
-
-                        <div className="card animate-up delay-100">
-                            <div className="card-icon" style={{ background: 'rgba(37, 99, 235, 0.1)', color: 'var(--primary)' }}>
-                                <Users />
-                            </div>
-                            <h3>Empathy</h3>
-                            <p>Behind every policy is a person. We treat our clients with the compassion and respect they deserve.</p>
-                        </div>
-
-                        <div className="card animate-up delay-200">
-                            <div className="card-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: 'var(--accent)' }}>
-                                <Trophy />
-                            </div>
-                            <h3>Excellence</h3>
-                            <p>We continuously innovate our coverage options to ensure we're offering the best protection in the market.</p>
-                        </div>
+                        {[
+                            { icon: <Shield size={24} />, title: 'Integrity', desc: 'We operate with absolute transparency. No hidden fees, no confusing jargon, just honest protection.' },
+                            { icon: <Users size={24} />, title: 'Empathy', desc: 'Behind every policy is a person. We treat our clients with the compassion and respect they deserve.' },
+                            { icon: <Trophy size={24} />, title: 'Excellence', desc: "We continuously innovate our coverage options to ensure we're offering the best protection in the market." },
+                        ].map((item, i) => (
+                            <FadeInUp key={i} delay={i * 0.1}>
+                                <div className="card h-full">
+                                    <div className="card-icon">{item.icon}</div>
+                                    <h3>{item.title}</h3>
+                                    <p style={{ marginBottom: 0 }}>{item.desc}</p>
+                                </div>
+                            </FadeInUp>
+                        ))}
                     </div>
                 </div>
             </section>
 
+            {/* CTA */}
             <section className="section-padding" style={{ background: 'var(--primary-dark)', color: 'white' }}>
-                <div className="container text-center animate-up">
-                    <h2 style={{ color: 'white', marginBottom: '2rem' }}>Experience the SecureLife difference</h2>
-                    <Link to="/contact" className="btn btn-primary" style={{ background: 'var(--accent)', color: 'var(--text-main)' }}>Get in Touch</Link>
+                <div className="container text-center">
+                    <FadeInUp>
+                        <h2 className="text-white mb-6">Experience the SecureLife difference</h2>
+                        <p className="text-white/80 max-w-lg mx-auto mb-8">Join over 2 million policyholders who trust us with their most important decisions.</p>
+                        <Link to="/contact" className="btn" style={{ background: 'var(--accent)', color: 'white' }}>Get in Touch</Link>
+                    </FadeInUp>
                 </div>
             </section>
         </>

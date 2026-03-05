@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { HelpCircle, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const FadeInUp: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6, delay, ease: "easeOut" }}
+    >
+        {children}
+    </motion.div>
+);
 
 const faqs = [
     {
@@ -35,41 +47,51 @@ const FAQ = () => {
     return (
         <>
             <div className="page-header">
-                <div className="container animate-up">
-                    <HelpCircle size={48} style={{ margin: '0 auto 1.5rem', opacity: 0.9 }} />
-                    <h1>Frequently Asked Questions</h1>
-                    <p>We're here to provide clarity. Find answers to common questions about our policies, coverage options, and claims process.</p>
+                <div className="container">
+                    <FadeInUp>
+                        <HelpCircle size={44} style={{ margin: '0 auto 1.25rem', opacity: 0.9 }} />
+                        <h1>Frequently Asked Questions</h1>
+                        <p>We're here to provide clarity. Find answers to common questions about our policies, coverage options, and claims process.</p>
+                    </FadeInUp>
                 </div>
             </div>
 
-            <section className="section-padding">
+            <section className="section-padding" style={{ background: 'white' }}>
                 <div className="container" style={{ maxWidth: '800px' }}>
-                    <div className="accordion animate-up">
-                        {faqs.map((faq, index) => (
-                            <div
-                                key={index}
-                                className={`accordion-item ${activeIndex === index ? 'active' : ''}`}
-                            >
-                                <button
-                                    className="accordion-header"
-                                    onClick={() => toggleAccordion(index)}
-                                    aria-expanded={activeIndex === index}
+                    <FadeInUp>
+                        <div className="accordion">
+                            {faqs.map((faq, index) => (
+                                <div
+                                    key={index}
+                                    className={`accordion-item ${activeIndex === index ? 'active' : ''}`}
                                 >
-                                    {faq.question}
-                                    <ChevronDown className="accordion-icon" />
-                                </button>
-                                <div className="accordion-content">
-                                    <p style={{ marginTop: '1rem', marginBottom: 0 }}>{faq.answer}</p>
+                                    <button
+                                        className="accordion-header"
+                                        onClick={() => toggleAccordion(index)}
+                                        aria-expanded={activeIndex === index}
+                                    >
+                                        {faq.question}
+                                        <ChevronDown className="accordion-icon" size={20} />
+                                    </button>
+                                    <div className="accordion-content">
+                                        <p style={{ marginTop: '0.5rem', marginBottom: 0, lineHeight: 1.7 }}>{faq.answer}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    </FadeInUp>
+                </div>
+            </section>
 
-                    <div className="text-center animate-up delay-200" style={{ marginTop: '4rem', padding: '3rem', background: 'var(--white)', borderRadius: 'var(--border-radius)', boxShadow: 'var(--card-shadow)' }}>
-                        <h3>Still have questions?</h3>
-                        <p>Our licensed insurance agents are ready to help you find the perfect coverage.</p>
-                        <Link to="/contact" className="btn btn-primary" style={{ marginTop: '1rem' }}>Contact Us</Link>
-                    </div>
+            <section className="section-padding" style={{ background: 'var(--bg-color)' }}>
+                <div className="container" style={{ maxWidth: '600px' }}>
+                    <FadeInUp>
+                        <div className="card text-center" style={{ padding: '3rem 2.5rem' }}>
+                            <h3 className="text-insurance-primary">Still have questions?</h3>
+                            <p>Our licensed insurance agents are ready to help you find the perfect coverage.</p>
+                            <Link to="/contact" className="btn btn-primary" style={{ marginTop: '0.5rem' }}>Contact Us</Link>
+                        </div>
+                    </FadeInUp>
                 </div>
             </section>
         </>

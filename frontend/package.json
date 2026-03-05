@@ -6,20 +6,26 @@
     "build": "tsc && vite build"
   },
   "dependencies": {
+    "framer-motion": "^12.35.0",
     "lucide-react": "^0.576.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-google-recaptcha": "^3.1.0",
     "react-router-dom": "^6.30.3",
+    "react-scroll-parallax": "^3.5.0",
     "xlsx": "^0.18.5",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.1",
     "@types/node": "^25.3.3",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/react-google-recaptcha": "^2.1.9",
     "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
   }
