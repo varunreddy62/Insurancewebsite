@@ -11,7 +11,7 @@ const createLeadSchema = z.object({
     insuranceType: z.enum(VALID_INSURANCE_TYPES, {
         errorMap: () => ({ message: `Insurance type must be one of: ${VALID_INSURANCE_TYPES.join(', ')}` })
     }),
-    details: z.record(z.any()).optional(), // allow any object structure for details
+    details: z.any().optional(), // allow any object structure for details
 });
 
 const updateLeadStatusSchema = z.object({
