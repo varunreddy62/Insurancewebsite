@@ -397,7 +397,7 @@ const Home: React.FC = () => {
                             <Parallax speed={-8}>
                                 <div className="story-image-container">
                                     <img
-                                        src="https://images.unsplash.com/photo-1560518883-ce09059eeefa?auto=format&fit=crop&q=80&w=800"
+                                        src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800"
                                         alt="Family protection"
                                     />
                                     <div className="story-image-overlay" />
