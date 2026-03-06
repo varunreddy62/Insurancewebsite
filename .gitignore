@@ -32,3 +32,5 @@ frontend/.env
 frontend/dist/
 frontend/dist-ssr/
 backend/dist/
+
+README.md

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { Shield, LogIn, Eye, EyeOff } from 'lucide-react';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -27,7 +28,7 @@ const AdminLogin: React.FC = () => {
         setError(null);
 
         try {
-            const res = await fetch('/admin/login', {
+            const res = await fetch(`${API_BASE}/admin/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, recaptchaToken }),

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { API_BASE } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, Phone, User, Clock, Filter, ChevronDown, ChevronUp, Plus, Trash2, Calendar, Download } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -51,7 +52,7 @@ const getToken = () => localStorage.getItem('adminToken');
 const authFetch = async (url: string, options: RequestInit = {}) => {
     const token = getToken();
     if (!token) throw new Error('Not authenticated');
-    return fetch(url, {
+    return fetch(`${API_BASE}${url}`, {
         ...options,
         headers: {
             'Content-Type': 'application/json',

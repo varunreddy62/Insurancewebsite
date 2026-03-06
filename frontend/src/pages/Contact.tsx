@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { API_BASE } from '../utils/api';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { useLeadFormStore, InsuranceType } from '../store/useLeadFormStore';
@@ -140,7 +141,7 @@ const Contact: React.FC = () => {
         };
 
         try {
-            const response = await fetch('/api/leads', {
+            const response = await fetch(`${API_BASE}/api/leads`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
