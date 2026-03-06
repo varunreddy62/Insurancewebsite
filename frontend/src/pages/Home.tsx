@@ -1,17 +1,42 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Heart, Shield, Star, ChevronDown, CheckCircle, Clock, Award, ThumbsUp, Phone, Mail } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Parallax, ParallaxBanner } from 'react-scroll-parallax';
+
+/* ── Reusable Motion Wrappers ── */
 
 const FadeInUp: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => (
     <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6, delay, ease: "easeOut" }}
     >
         {children}
     </motion.div>
+);
+
+const HoverCard: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+    <motion.div
+        whileHover={{ y: -6, scale: 1.02 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        className={className}
+    >
+        {children}
+    </motion.div>
+);
+
+const MotionButton: React.FC<{ children: React.ReactNode; className?: string; style?: React.CSSProperties }> = ({ children, className = '', style }) => (
+    <motion.span
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.15 }}
+        style={{ display: 'inline-block', ...style }}
+        className={className}
+    >
+        {children}
+    </motion.span>
 );
 
 const Home: React.FC = () => {
@@ -30,45 +55,97 @@ const Home: React.FC = () => {
 
     return (
         <div>
-            {/* ── HERO SECTION — Two-Column ── */}
-            <section className="hero-section">
-                <div className="hero-grid">
+            {/* ══════════════════════════════════════════
+                HERO SECTION — Parallax Background + Two-Column
+                ══════════════════════════════════════════ */}
+            <section className="hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
+                {/* Parallax background image */}
+                <ParallaxBanner
+                    layers={[
+                        {
+                            image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80',
+                            speed: -10,
+                        },
+                    ]}
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+                />
+                {/* Gradient overlays for depth */}
+                <div style={{ position: 'absolute', inset: 0, background: 'rgba(6, 39, 31, 0.75)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg, rgba(6,39,31,0.9) 0%, rgba(11,61,46,0.7) 50%, rgba(21,122,59,0.5) 100%)' }} />
+                {/* Subtle radial glow */}
+                <div className="section-glow" style={{ position: 'absolute', top: '-20%', right: '-10%', width: '60%', height: '120%', background: 'radial-gradient(ellipse at center, rgba(76,175,80,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+                <div className="hero-grid" style={{ position: 'relative', zIndex: 10 }}>
                     <motion.div
                         className="hero-text"
                         initial={{ opacity: 0, x: -40 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="hero-badge">Europe's trusted insurance partner</span>
+                        <motion.span
+                            className="hero-badge"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                        >
+                            Europe's trusted insurance partner
+                        </motion.span>
                         <h1 className="hero-title">Insurance Solutions For Your Future</h1>
                         <p className="hero-subtitle">
                             Secure your future with a modern, transparent insurance provider. Simple coverage, fast claims, and real human support when it matters most.
                         </p>
                         <div className="hero-actions">
-                            <Link to="/contact" className="btn btn-accent">Get Consultation</Link>
-                            <Link to="/about-us" className="btn btn-ghost" style={{ borderColor: 'rgba(255,255,255,0.25)', color: 'white' }}>Learn More</Link>
+                            <MotionButton>
+                                <Link to="/contact" className="btn btn-accent">Get Consultation</Link>
+                            </MotionButton>
+                            <MotionButton>
+                                <Link to="/about-us" className="btn btn-ghost" style={{ borderColor: 'rgba(255,255,255,0.25)', color: 'white' }}>Learn More</Link>
+                            </MotionButton>
                         </div>
                     </motion.div>
 
                     <motion.div
                         className="hero-image-wrapper"
-                        initial={{ opacity: 0, x: 40 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        initial={{ opacity: 0, scale: 0.92 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1, delay: 0.3 }}
                     >
                         <div className="hero-image-glow" />
-                        <img
-                            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=800"
-                            alt="Professional insurance consultation"
-                            className="hero-image"
-                        />
+                        <Parallax speed={5}>
+                            <img
+                                src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=800"
+                                alt="Professional insurance consultation"
+                                className="hero-image"
+                            />
+                        </Parallax>
                     </motion.div>
                 </div>
+
+                {/* Scroll indicator */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.2, duration: 1 }}
+                    style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 10 }}
+                >
+                    <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.6875rem', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 500 }}>Scroll</span>
+                    <motion.div
+                        animate={{ y: [0, 8, 0] }}
+                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                        style={{ width: '28px', height: '44px', borderRadius: '14px', border: '1.5px solid rgba(255,255,255,0.2)', display: 'flex', justifyContent: 'center', paddingTop: '8px' }}
+                    >
+                        <div style={{ width: '4px', height: '10px', background: 'rgba(255,255,255,0.5)', borderRadius: '2px' }} />
+                    </motion.div>
+                </motion.div>
             </section>
 
-            {/* ── PAYOUT RESULTS — White bg ── */}
-            <section className="home-section section-white">
-                <div className="container">
+            {/* ══════════════════════════════════════════
+                PAYOUT RESULTS — White bg
+                ══════════════════════════════════════════ */}
+            <section className="home-section section-white" style={{ position: 'relative', overflow: 'hidden' }}>
+                {/* Subtle background glow */}
+                <div className="section-glow" style={{ position: 'absolute', bottom: '-30%', left: '-10%', width: '50%', height: '80%', background: 'radial-gradient(ellipse at center, rgba(76,175,80,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div className="container" style={{ position: 'relative', zIndex: 1 }}>
                     <FadeInUp>
                         <div className="payout-heading">
                             <h2>Our Company's Payout Results</h2>
@@ -89,20 +166,30 @@ const Home: React.FC = () => {
                             { label: 'Satisfaction', value: '4.9/5', icon: ThumbsUp }
                         ].map((stat, idx) => (
                             <FadeInUp key={stat.label} delay={idx * 0.1}>
-                                <div className="payout-stat">
-                                    <div className="payout-icon">
+                                <motion.div
+                                    className="payout-stat"
+                                    whileHover={{ scale: 1.05 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <motion.div
+                                        className="payout-icon"
+                                        whileHover={{ scale: 1.1, rotate: 3 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
                                         <stat.icon size={28} strokeWidth={1.5} />
-                                    </div>
+                                    </motion.div>
                                     <strong className="payout-value">{stat.value}</strong>
                                     <span className="payout-label">{stat.label}</span>
-                                </div>
+                                </motion.div>
                             </FadeInUp>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* ── INSURANCE COVERAGE CARDS — Gray bg ── */}
+            {/* ══════════════════════════════════════════
+                INSURANCE COVERAGE CARDS — Gray bg
+                ══════════════════════════════════════════ */}
             <section className="home-section section-gray">
                 <div className="container">
                     <FadeInUp>
@@ -124,20 +211,28 @@ const Home: React.FC = () => {
                             { to: '/life-insurance', icon: Heart, title: 'Life Insurance', desc: "Long-term protection built to secure your family's financial future in every scenario." }
                         ].map((card, idx) => (
                             <FadeInUp key={card.title} delay={idx * 0.1}>
-                                <Link to={card.to} className="coverage-card">
-                                    <div className="coverage-card-icon">
-                                        <card.icon size={24} strokeWidth={1.5} />
-                                    </div>
-                                    <h3>{card.title}</h3>
-                                    <p>{card.desc}</p>
-                                </Link>
+                                <HoverCard>
+                                    <Link to={card.to} className="coverage-card">
+                                        <motion.div
+                                            className="coverage-card-icon"
+                                            whileHover={{ scale: 1.1, rotate: 3 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            <card.icon size={24} strokeWidth={1.5} />
+                                        </motion.div>
+                                        <h3>{card.title}</h3>
+                                        <p>{card.desc}</p>
+                                    </Link>
+                                </HoverCard>
                             </FadeInUp>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* ── TESTIMONIALS — White bg ── */}
+            {/* ══════════════════════════════════════════
+                TESTIMONIALS — White bg
+                ══════════════════════════════════════════ */}
             <section className="home-section section-white">
                 <div className="container">
                     <FadeInUp>
@@ -154,28 +249,32 @@ const Home: React.FC = () => {
                             { name: 'Elena Gomez', role: 'Architect', quote: '"Professional, reliable, and modern. My auto claim was handled within 24 hours, exactly as promised."' },
                         ].map((item, idx) => (
                             <FadeInUp key={item.name} delay={idx * 0.1}>
-                                <div className="testimonial-card">
-                                    <div className="testimonial-stars">
-                                        {Array.from({ length: 5 }).map((_, i) => (
-                                            <Star key={i} size={16} fill="#4CAF50" color="#4CAF50" />
-                                        ))}
-                                    </div>
-                                    <p className="testimonial-quote">{item.quote}</p>
-                                    <div className="testimonial-author">
-                                        <div className="testimonial-avatar" />
-                                        <div>
-                                            <div className="testimonial-name">{item.name}</div>
-                                            <div className="testimonial-role">{item.role}</div>
+                                <HoverCard className="h-full">
+                                    <div className="testimonial-card" style={{ height: '100%' }}>
+                                        <div className="testimonial-stars">
+                                            {Array.from({ length: 5 }).map((_, i) => (
+                                                <Star key={i} size={16} fill="#4CAF50" color="#4CAF50" />
+                                            ))}
+                                        </div>
+                                        <p className="testimonial-quote">{item.quote}</p>
+                                        <div className="testimonial-author">
+                                            <div className="testimonial-avatar" />
+                                            <div>
+                                                <div className="testimonial-name">{item.name}</div>
+                                                <div className="testimonial-role">{item.role}</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </HoverCard>
                             </FadeInUp>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* ── FAQ ACCORDION — Gray bg ── */}
+            {/* ══════════════════════════════════════════
+                FAQ ACCORDION — Gray bg — AnimatePresence
+                ══════════════════════════════════════════ */}
             <section className="home-section section-gray">
                 <div className="container">
                     <FadeInUp>
@@ -195,11 +294,28 @@ const Home: React.FC = () => {
                                         aria-expanded={openFaq === idx}
                                     >
                                         {faq.q}
-                                        <ChevronDown size={20} className="home-faq-chevron" />
+                                        <motion.span
+                                            animate={{ rotate: openFaq === idx ? 180 : 0 }}
+                                            transition={{ duration: 0.25, ease: "easeOut" }}
+                                            style={{ display: 'flex' }}
+                                        >
+                                            <ChevronDown size={20} className="home-faq-chevron" style={{ transform: 'none' }} />
+                                        </motion.span>
                                     </button>
-                                    <div className="home-faq-answer">
-                                        <p>{faq.a}</p>
-                                    </div>
+                                    <AnimatePresence initial={false}>
+                                        {openFaq === idx && (
+                                            <motion.div
+                                                key="faq-answer"
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: 'auto', opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{ duration: 0.25, ease: "easeOut" }}
+                                                style={{ overflow: 'hidden', padding: '0 1.5rem' }}
+                                            >
+                                                <p style={{ paddingBottom: '1.25rem', margin: 0, color: 'var(--text-muted)', lineHeight: 1.7, fontSize: '0.9375rem' }}>{faq.a}</p>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             </FadeInUp>
                         ))}
@@ -213,7 +329,9 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
-            {/* ── CONTACT + CALLBACK — White bg ── */}
+            {/* ══════════════════════════════════════════
+                CONTACT + CALLBACK — White bg
+                ══════════════════════════════════════════ */}
             <section className="home-section section-white">
                 <div className="container">
                     <div className="contact-split">
@@ -223,57 +341,71 @@ const Home: React.FC = () => {
                                 <p>Have questions about coverage or claims? Our team is available around the clock to guide you.</p>
                                 <ul className="contact-details">
                                     <li className="contact-detail-item">
-                                        <div className="contact-detail-icon"><Phone size={16} /></div>
+                                        <motion.div className="contact-detail-icon" whileHover={{ scale: 1.1, rotate: 3 }} transition={{ duration: 0.2 }}>
+                                            <Phone size={16} />
+                                        </motion.div>
                                         <span><strong style={{ color: 'var(--primary)', marginRight: '0.5rem' }}>Phone:</strong>+44 20 1234 5678</span>
                                     </li>
                                     <li className="contact-detail-item">
-                                        <div className="contact-detail-icon"><Mail size={16} /></div>
+                                        <motion.div className="contact-detail-icon" whileHover={{ scale: 1.1, rotate: 3 }} transition={{ duration: 0.2 }}>
+                                            <Mail size={16} />
+                                        </motion.div>
                                         <span><strong style={{ color: 'var(--primary)', marginRight: '0.5rem' }}>Email:</strong>support@trustwave.eu</span>
                                     </li>
                                 </ul>
-                                <Link to="/contact" className="btn btn-primary">Talk to an Expert</Link>
+                                <MotionButton>
+                                    <Link to="/contact" className="btn btn-primary">Talk to an Expert</Link>
+                                </MotionButton>
                             </div>
                         </FadeInUp>
 
                         <FadeInUp delay={0.15}>
-                            <div className="callback-card">
-                                <h3>Request a Callback</h3>
-                                <p>Share a few details and an advisor will call you back within one business day.</p>
-                                <form
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        alert('Callback request submitted. (Hook this up to backend when ready.)');
-                                    }}
-                                    className="callback-form"
-                                >
-                                    <input className="callback-input" placeholder="Full name" required />
-                                    <input className="callback-input" placeholder="Phone number" required />
-                                    <input className="callback-input" placeholder="Email (optional)" />
-                                    <button type="submit" className="callback-submit">
-                                        Request Callback
-                                    </button>
-                                </form>
-                            </div>
+                            <HoverCard>
+                                <div className="callback-card">
+                                    <h3>Request a Callback</h3>
+                                    <p>Share a few details and an advisor will call you back within one business day.</p>
+                                    <form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            alert('Callback request submitted. (Hook this up to backend when ready.)');
+                                        }}
+                                        className="callback-form"
+                                    >
+                                        <input className="callback-input" placeholder="Full name" required />
+                                        <input className="callback-input" placeholder="Phone number" required />
+                                        <input className="callback-input" placeholder="Email (optional)" />
+                                        <MotionButton style={{ width: '100%' }}>
+                                            <button type="submit" className="callback-submit">
+                                                Request Callback
+                                            </button>
+                                        </MotionButton>
+                                    </form>
+                                </div>
+                            </HoverCard>
                         </FadeInUp>
                     </div>
                 </div>
             </section>
 
-            {/* ── IMAGE STORY — Gray bg ── */}
-            <section className="home-section section-gray">
+            {/* ══════════════════════════════════════════
+                IMAGE STORY — Gray bg — Parallax image
+                ══════════════════════════════════════════ */}
+            <section className="home-section section-gray" style={{ overflow: 'hidden' }}>
                 <div className="container">
                     <div className="story-grid">
                         <FadeInUp>
-                            <div className="story-image-container">
-                                <img
-                                    src="https://images.unsplash.com/photo-1560518883-ce09059eeefa?auto=format&fit=crop&q=80&w=800"
-                                    alt="Family protection"
-                                />
-                                <div className="story-image-overlay" />
-                                <div className="story-image-caption">
-                                    "Protecting what matters most, exactly when you need it."
+                            <Parallax speed={-8}>
+                                <div className="story-image-container">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1560518883-ce09059eeefa?auto=format&fit=crop&q=80&w=800"
+                                        alt="Family protection"
+                                    />
+                                    <div className="story-image-overlay" />
+                                    <div className="story-image-caption">
+                                        "Protecting what matters most, exactly when you need it."
+                                    </div>
                                 </div>
-                            </div>
+                            </Parallax>
                         </FadeInUp>
                         <FadeInUp delay={0.15}>
                             <div className="story-content">
@@ -282,24 +414,38 @@ const Home: React.FC = () => {
                                 <p>
                                     Life is unpredictable, but your coverage shouldn't be. We design our policies to adapt to your changing needs, ensuring you and your loved ones are always protected.
                                 </p>
-                                <Link to="/about-us" className="btn btn-ghost">
-                                    Discover Our Story <span style={{ marginLeft: '0.25rem' }}>→</span>
-                                </Link>
+                                <MotionButton>
+                                    <Link to="/about-us" className="btn btn-ghost">
+                                        Discover Our Story <span style={{ marginLeft: '0.25rem' }}>→</span>
+                                    </Link>
+                                </MotionButton>
                             </div>
                         </FadeInUp>
                     </div>
                 </div>
             </section>
 
-            {/* ── PARTNERS — White bg ── */}
+            {/* ══════════════════════════════════════════
+                PARTNERS — White bg
+                ══════════════════════════════════════════ */}
             <section className="home-section section-white">
                 <div className="container">
                     <FadeInUp>
                         <div className="partners-section">
                             <p className="partners-label">Trusted by industry leaders</p>
                             <div className="partners-row">
-                                {['Acme Corp', 'Global Inc', 'Nova Systems', 'Umbrella', 'Vertex'].map((partner) => (
-                                    <span key={partner} className="partner-name">{partner}</span>
+                                {['Acme Corp', 'Global Inc', 'Nova Systems', 'Umbrella', 'Vertex'].map((partner, idx) => (
+                                    <motion.span
+                                        key={partner}
+                                        className="partner-name"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 0.2, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: idx * 0.08 }}
+                                        whileHover={{ opacity: 0.6, scale: 1.05 }}
+                                    >
+                                        {partner}
+                                    </motion.span>
                                 ))}
                             </div>
                         </div>

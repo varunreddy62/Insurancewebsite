@@ -49,7 +49,7 @@ const Navbar = () => {
         <div className={`navbar-wrapper${scrolled ? ' navbar-wrapper--scrolled' : ''}`}>
             <nav className={`navbar${scrolled ? ' navbar--scrolled' : ''}`}>
                 <Link to="/" className="navbar-logo" onClick={closeMenu}>
-                    <Shield size={26} strokeWidth={2.5} style={{ color: 'var(--accent)' }} />
+                    <Shield size={26} strokeWidth={2.5} style={{ color: 'inherit' }} />
                     SecureLife
                 </Link>
 

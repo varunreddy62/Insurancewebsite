@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, ShieldCheck, Banknote, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Parallax } from 'react-scroll-parallax';
 
 const FadeInUp: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => (
     <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6, delay, ease: "easeOut" }}
@@ -20,7 +21,13 @@ const AutoInsurance = () => {
             <div className="page-header">
                 <div className="container">
                     <FadeInUp>
-                        <Car size={44} style={{ margin: '0 auto 1.25rem', opacity: 0.9 }} />
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 0.9 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                            <Car size={44} style={{ margin: '0 auto 1.25rem' }} />
+                        </motion.div>
                         <h1>Auto Insurance Policies</h1>
                         <p>Hit the road with total confidence. We cover everything from fender benders to major accidents so you never drive alone.</p>
                     </FadeInUp>
@@ -32,11 +39,13 @@ const AutoInsurance = () => {
                 <div className="container">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <FadeInUp>
-                            <img
-                                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
-                                alt="Car coverage"
-                                className="w-full rounded-[20px] shadow-lg"
-                            />
+                            <Parallax speed={-5}>
+                                <img
+                                    src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800"
+                                    alt="Car coverage"
+                                    className="w-full rounded-[20px] shadow-lg"
+                                />
+                            </Parallax>
                         </FadeInUp>
 
                         <FadeInUp delay={0.2}>
@@ -49,10 +58,19 @@ const AutoInsurance = () => {
                                     'Rental car reimbursement',
                                     'Accident forgiveness after 3 accident-free years'
                                 ].map((benefit, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-base text-insurance-textMain">
-                                        <ShieldCheck className="text-insurance-accent mt-0.5 shrink-0" size={20} />
+                                    <motion.li
+                                        key={i}
+                                        className="flex items-start gap-3 text-base text-insurance-textMain"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.4, delay: i * 0.1 }}
+                                    >
+                                        <motion.span whileHover={{ scale: 1.1, rotate: 3 }} transition={{ duration: 0.2 }}>
+                                            <ShieldCheck className="text-insurance-accent mt-0.5 shrink-0" size={20} />
+                                        </motion.span>
                                         {benefit}
-                                    </li>
+                                    </motion.li>
                                 ))}
                             </ul>
                         </FadeInUp>
@@ -74,11 +92,17 @@ const AutoInsurance = () => {
                             { icon: <Car size={24} />, title: 'Collision', desc: 'Pays specifically to repair or replace your vehicle if it is damaged in an accident with another vehicle or object.' },
                         ].map((item, i) => (
                             <FadeInUp key={i} delay={i * 0.1}>
-                                <div className="card h-full">
-                                    <div className="card-icon">{item.icon}</div>
+                                <motion.div
+                                    className="card h-full"
+                                    whileHover={{ y: -6, scale: 1.02 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <motion.div className="card-icon" whileHover={{ scale: 1.1, rotate: 3 }} transition={{ duration: 0.2 }}>
+                                        {item.icon}
+                                    </motion.div>
                                     <h3>{item.title}</h3>
                                     <p style={{ marginBottom: 0 }}>{item.desc}</p>
-                                </div>
+                                </motion.div>
                             </FadeInUp>
                         ))}
                     </div>
@@ -91,9 +115,11 @@ const AutoInsurance = () => {
                     <FadeInUp>
                         <h2 className="text-white mb-6">Ready to hit the road safely?</h2>
                         <p className="text-white/80 max-w-lg mx-auto mb-8">Get a competitive quote in minutes and start driving with confidence.</p>
-                        <Link to="/contact?type=auto" className="btn" style={{ background: 'var(--accent)', color: 'white' }}>
-                            Get Auto Quote
-                        </Link>
+                        <motion.span whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{ display: 'inline-block' }}>
+                            <Link to="/contact?type=auto" className="btn" style={{ background: 'var(--accent)', color: 'white' }}>
+                                Get Auto Quote
+                            </Link>
+                        </motion.span>
                     </FadeInUp>
                 </div>
             </section>
